@@ -152,7 +152,10 @@ function drawWheel(){let svg=document.getElementById("wheel"),out=[];const cx=30
 for(let i=0;i<108;i++){let a=i*(360/108),b=(i+1)*(360/108);let p=padData[i];out.push(`<path d="${arcPath(cx,cy,229,263,a,b)}" fill="${p.pada%2?'#c99c5a':'#e4c99c'}" stroke="#fffaf1" stroke-width=".8" data-pada="${i+1}" style="cursor:pointer"/>`);let mid=(a+b)/2,pt=polar(cx,246,mid);if(i%3===0)out.push(`<text class="svg-small" x="${pt[0]}" y="${pt[1]+3}">${p.nak}</text>`)}
 for(let i=0;i<12;i++){let pt=polar(cx,282,i*30+15);out.push(`<text class="svg-small" x="${pt[0]}" y="${pt[1]}">${i*30}°</text>`)}
 out.push(`<circle cx="300" cy="300" r="137" fill="#fffaf1" stroke="#9b6745" stroke-width="1.5"/><text class="svg-center" x="300" y="285">360° ZODIAC</text><text class="svg-small" x="300" y="306">12 signs · 27 nakshatras</text><text class="svg-small" x="300" y="323">108 padas · 3°20′ each</text>`);
-svg.innerHTML=out.join("");svg.querySelectorAll("[data-sign]").forEach(el=>el.addEventListener("click",()=>selectSign(+el.dataset.sign)));svg.querySelectorAll("[data-pada]").forEach(el=>el.addEventListener("click",()=>selectPada(+el.dataset.pada)));
+svg.innerHTML=out.join("");svg.querySelectorAll("[data-sign]").forEach(el=>el.addEventListener("click",()=>{
+   const sign=+el.dataset.sign;
+   selectHouse(houseFor(sign));
+ }));svg.querySelectorAll("[data-pada]").forEach(el=>el.addEventListener("click",()=>selectPada(+el.dataset.pada)));
 }
 function grahaPanel(){let d=planetDetails[selectedPlanet];return `<div class="graha-picker" aria-label="Select one of the seven planets">${planetNames.map(n=>`<button type="button" data-graha="${n}" aria-pressed="${selectedPlanet===n}">${n}</button>`).join("")}</div><div class="graha-info"><b>${selectedPlanet} — planetary dignity reference</b><p><b>Own sign(s):</b> ${d.own}</p><p><b>Exaltation:</b> ${d.exalt}</p><p><b>Debilitation:</b> ${d.debil}</p><p><b>Mool Trikona:</b> ${d.mt}</p></div>`}
 
@@ -209,9 +212,20 @@ function drawSouth(){
  let out=`<rect x="5" y="5" width="490" height="490" fill="#fffaf1" stroke="#9b6745" stroke-width="2"/>`;
  positions.forEach(([c,r],i)=>{let sign=i+1,house=houseFor(sign),x=5+c*122.5,y=5+r*122.5;out+=`<g data-sign="${sign}" style="cursor:pointer"><rect x="${x}" y="${y}" width="122.5" height="122.5" fill="${selectedSign===sign?'#e8c98f':'#fffaf1'}" stroke="#9b6745" stroke-width="1.6"/><text class="house-label" x="${x+61}" y="${y+34}">RASHI ${sign}</text><text class="house-sign" x="${x+61}" y="${y+60}">${signs[sign-1].symbol} ${signs[sign-1].name}</text><text class="house-name" x="${x+61}" y="${y+83}">House ${house}</text></g>`});
  out+=`<rect x="127.5" y="127.5" width="245" height="245" fill="#f8f0e3" stroke="#9b6745"/><text class="svg-center" x="250" y="230">SOUTH INDIAN</text><text class="svg-small" x="250" y="254">Anticlockwise sign sequence</text><text class="svg-small" x="250" y="278">Lagna: ${lagna.value} · ${signs[Number(lagna.value)-1].name}</text>`;
- svg.innerHTML=out;svg.querySelectorAll("[data-sign]").forEach(el=>el.addEventListener("click",()=>selectSign(+el.dataset.sign)));
+ svg.innerHTML=out;svg.querySelectorAll("[data-sign]").forEach(el=>el.addEventListener("click",()=>{
+   const sign=+el.dataset.sign;
+   selectHouse(houseFor(sign));
+ }));
 }
-function selectHouse(h){let sign=((Number(lagna.value)+h-2)%12)+1;selectedSign=sign;selectedPada=null;let base=`<div class="big">House ${h}</div><h3>${signs[sign-1].name}</h3><div class="pills"><span class="pill">Rashi ${sign}</span><span class="pill">Lord: ${signs[sign-1].lord}</span></div><p><b>House group:</b> ${houseGroup(h)}</p><p><b>Sign nature:</b> ${signs[sign-1].mode}, ${signs[sign-1].element}</p><p><b>House classification:</b> ${houseClasses(h).join(", ")}</p>`;northDescription=base;drawNorth();drawSouth();drawWheel();refreshPanels()}
+// House clicks use the same selection/update pipeline as the chart controls.
+function selectHouse(h){
+ selectedHouse=h;
+ selectedSign=((Number(lagna.value)+h-2)%12)+1;
+ selectedPada=null;
+ drawNorth();
+ drawSouth();
+ refreshPanels();
+}
 function houseGroup(h){return [1,4,7,10].includes(h)?"Kendra": [2,5,8,11].includes(h)?"Panapara": "Apoklima"}
 function houseClasses(h){let a=[];if([1,4,7,10].includes(h))a.push("Kendra");if([2,5,8,11].includes(h))a.push("Panapara");if([3,6,9,12].includes(h))a.push("Apoklima");if([1,5,9].includes(h))a.push("Trikona");if([3,6,11].includes(h))a.push("Trishadaya");if([6,8,12].includes(h))a.push("Trika");if([2,7].includes(h))a.push("Maraka");a.push(h<=6?"Below horizon / invisible":"Above horizon / visible");return a}
 function updateDetails(){northDescription=null;refreshPanels()}
@@ -254,7 +268,14 @@ document.getElementById("sections").innerHTML=sections.map((s,i)=>`<article clas
 }
 
 document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{activeStage=b.dataset.stage;document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",String(x===b)));["north","south"].forEach(x=>document.getElementById("stage-"+x).classList.toggle("hidden",x!==activeStage))}));
-lagna.addEventListener("change",()=>{selectedHouse=1;selectedSign=Number(lagna.value);drawNorth();drawSouth();refreshPanels()});
+lagna.addEventListener("change",()=>{
+ selectedHouse=1;
+ selectedSign=Number(lagna.value);
+ selectedPada=null;
+ drawNorth();
+ drawSouth();
+ refreshPanels();
+});
 drawNorth();drawSouth();refreshPanels();
 </script>
 </body></html>
