@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#17152b">
+<title>Vedic Astrology — Three-Format Reference Chart</title>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf8;--ink:#25243a;--muted:#6f6b7c;--line:#ded8cb;--accent:#8e3d25;--gold:#c18a36;--navy:#24213d;--soft:#f2e8d7;--green:#356b58;--blue:#426b91}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(120deg,#211d3a,#493047);color:#fff;padding:28px 20px 24px}
+.wrap{max-width:1250px;margin:auto;padding:0 18px}
+.eyebrow{text-transform:uppercase;letter-spacing:.16em;color:#e6c58b;font-size:11px;font-weight:700}
+h1{font-family:Georgia,serif;font-size:clamp(27px,4vw,43px);line-height:1.12;margin:8px 0}
+header p{max-width:760px;color:#e9e4e8;margin:8px 0 0}
+main{padding:22px 0 50px}
+.toolbar,.panel,.stage,.info-card{background:var(--paper);border:1px solid var(--line);border-radius:15px;box-shadow:0 5px 18px #342b1b0a}
+.toolbar{padding:14px;margin-bottom:16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.stage-tabs{display:flex;gap:7px;flex-wrap:wrap}
+button,select{font:inherit}
+.tab,.action{border:1px solid var(--line);border-radius:9px;padding:9px 13px;background:#fffaf1;color:var(--ink);cursor:pointer}
+.tab[aria-selected=true],.action.primary{background:var(--navy);border-color:var(--navy);color:white}
+.tab:focus-visible,button:focus-visible,select:focus-visible{outline:3px solid #d5a44d;outline-offset:2px}
+select{border:1px solid var(--line);border-radius:9px;background:white;padding:9px 30px 9px 10px;color:var(--ink)}
+.control-label{font-size:12px;color:var(--muted);font-weight:700}
+.stage{padding:18px;margin-bottom:18px}
+.stage-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap;margin-bottom:14px}
+h2{font: bold 24px Georgia,serif;margin:0 0 3px}
+h3{font-size:16px;margin:0 0 8px}
+.sub{color:var(--muted);font-size:13px}
+.visual{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,.8fr);gap:16px;align-items:start}
+.chart-wrap{background:#fcf8ef;border:1px solid var(--line);border-radius:13px;padding:12px;min-width:0}
+svg{display:block;width:100%;height:auto;max-height:650px}
+.sign-hit{cursor:pointer;stroke:#fff;stroke-width:1.2;transition:filter .15s}
+.sign-hit:hover,.sign-hit.selected{filter:brightness(.88);stroke:#6c301e;stroke-width:3}
+.svg-label{font: bold 13px system-ui;fill:#302b35;text-anchor:middle;pointer-events:none}
+.svg-small{font:10px system-ui;fill:#5e5860;text-anchor:middle;pointer-events:none}
+.svg-center{font:bold 14px Georgia;fill:#493047;text-anchor:middle}
+.detail{background:#f8f2e7;border:1px solid var(--line);border-radius:12px;padding:15px;min-height:230px}
+.detail h3{font: bold 20px Georgia;margin-bottom:5px}
+.detail .big{font: bold 30px Georgia;color:var(--accent)}
+.graha-picker{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 10px;padding-top:10px;border-top:1px solid #dfd2bd}
+.graha-picker button{border:1px solid #d6c7b0;background:#fffaf1;border-radius:7px;padding:6px 9px;font-size:12px;cursor:pointer}
+.graha-picker button[aria-pressed=true]{background:#302b48;color:#fff;border-color:#302b48}
+.graha-info{background:#fffaf1;border:1px solid #e1d4c1;border-radius:9px;padding:10px;margin-top:8px;font-size:13px}
+.house-label{font:bold 13px system-ui;fill:#8a3e27;text-anchor:middle;pointer-events:none}
+.house-sign{font:bold 16px system-ui;fill:#29253b;text-anchor:middle;pointer-events:none}
+.house-name{font:11px system-ui;fill:#5f5860;text-anchor:middle;pointer-events:none}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin:9px 0}
+.pill{background:#eee5d6;border-radius:30px;padding:3px 9px;font-size:12px}
+.kundli-grid{display:grid;grid-template-columns:minmax(300px,1fr);gap:16px}.house-reference{grid-column:1/-1}
+.kundli{width:min(100%,570px);margin:auto;aspect-ratio:1;background:#fffaf1;border:2px solid #9b6745;position:relative}
+.kundli svg{width:100%;height:100%}
+.kundli-cell{cursor:pointer;fill:transparent;stroke:transparent;stroke-width:3}
+.kundli-cell:hover,.kundli-cell.selected{fill:#d9b56c35;stroke:#a14c2e}
+.kundli-text{font: bold 13px system-ui;fill:#302b35;text-anchor:middle;pointer-events:none}
+.kundli-sub{font:10px system-ui;fill:#766a5e;text-anchor:middle;pointer-events:none}
+.info-section{margin-top:22px}
+.info-section>h2{margin:0 0 12px}
+.section-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.info-card{padding:15px;box-shadow:none}
+.info-card p{margin:5px 0;color:var(--muted);font-size:13px}.house-sections{margin-top:14px}.house-reference{min-height:0}.house-reference>.graha-picker{margin-top:16px}
+.table-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{text-align:left;padding:8px 9px;border-bottom:1px solid #e8e1d5;vertical-align:top}
+th{background:#f4ecdf;color:#514353;font-weight:700}
+tr:last-child td{border-bottom:0}
+.sign-list{display:flex;flex-wrap:wrap;gap:6px}
+.sign-chip{border:1px solid #ded2bf;background:#fffaf1;border-radius:7px;padding:4px 8px;font-size:12px}
+.note{border-left:3px solid var(--gold);padding:9px 12px;background:#faf3e6;border-radius:0 8px 8px 0;color:#5b5148;font-size:13px;margin:12px 0}
+.search{min-width:190px;flex:1}
+.search input{width:100%;border:1px solid var(--line);border-radius:9px;padding:9px 11px;font:inherit}
+.hidden{display:none!important}
+footer{padding:22px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:800px){.visual,.kundli-grid{grid-template-columns:1fr}.section-grid{grid-template-columns:1fr}.detail{min-height:0}.stage{padding:12px}}
+@media print{header{background:#fff;color:#111;border-bottom:2px solid #333}header p{color:#333}.toolbar{display:none}.stage{break-inside:avoid}.info-card{break-inside:avoid}body{background:white}.detail{background:white}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">Interactive Jyotish learning reference</div>
+<h1>Vedic Astrology — Three-Format Reference Chart</h1>
+<p>Explore North Indian and South Indian kundli layouts. Select any house or sign to view all eight descriptive reference sections in the context of that selection.</p>
+</div></header>
+<main class="wrap">
+<div class="toolbar">
+<div><div class="control-label">CHART FORMAT</div><div class="stage-tabs" role="tablist" aria-label="Chart format">
+<button class="tab" data-stage="north" aria-selected="true">North Indian</button>
+<button class="tab" data-stage="south" aria-selected="false">South Indian</button>
+</div></div>
+<div><div class="control-label">ASCENDANT / LAGNA</div><select id="lagna" aria-label="Select ascendant"></select></div>
+
+</div>
+
+
+
+<section class="stage" id="stage-north">
+<div class="stage-head"><div><h2>North Indian Kundli</h2><div class="sub">Houses remain fixed; sign glyphs stay visible when a house is selected. Select a house to see all eight reference sections below the chart.</div></div></div>
+<div class="kundli-grid"><div class="chart-wrap"><div class="kundli"><svg id="north" viewBox="0 0 500 500" role="img" aria-label="North Indian kundli chart"></svg></div></div></div>
+<div class="detail house-reference" id="detail-north" aria-live="polite"><div class="big">Select a house</div><h3>Descriptive Reference — Eight Sections</h3><p>Select any house in the North Indian chart to display all eight sections in relation to that house and its sign.</p></div>
+</section>
+
+<section class="stage hidden" id="stage-south">
+<div class="stage-head"><div><h2>South Indian Kundli</h2><div class="sub">Signs remain fixed in their traditional square arrangement; houses are counted from the selected lagna. Select any sign to see all eight reference sections below the chart.</div></div></div>
+<div class="kundli-grid"><div class="chart-wrap"><div class="kundli"><svg id="south" viewBox="0 0 500 500" role="img" aria-label="South Indian kundli chart"></svg></div></div></div>
+<div class="detail house-reference" id="detail-south" aria-live="polite"><div class="big">Select a sign</div><h3>Descriptive Reference — Eight Sections</h3><p>Select any sign cell in the South Indian chart to display all eight sections in relation to its house from lagna.</p></div>
+</section>
+
+</main>
+<footer>Created for the community — Swapnil Karambelkar · Static HTML, CSS and JavaScript · Suitable for GitHub Pages</footer>
+<script>
+const signs=[
+{name:"Aries",sanskrit:"Mesha",abbr:"Ari",symbol:"♈",lord:"Mars",element:"Fire",mode:"Movable",gender:"Male",number:1},
+{name:"Taurus",sanskrit:"Vrishabha",abbr:"Tau",symbol:"♉",lord:"Venus",element:"Earth",mode:"Fixed",gender:"Female",number:2},
+{name:"Gemini",sanskrit:"Mithuna",abbr:"Gem",symbol:"♊",lord:"Mercury",element:"Air",mode:"Dual",gender:"Male",number:3},
+{name:"Cancer",sanskrit:"Karka",abbr:"Can",symbol:"♋",lord:"Moon",element:"Water",mode:"Movable",gender:"Female",number:4},
+{name:"Leo",sanskrit:"Simha",abbr:"Leo",symbol:"♌",lord:"Sun",element:"Fire",mode:"Fixed",gender:"Male",number:5},
+{name:"Virgo",sanskrit:"Kanya",abbr:"Vir",symbol:"♍",lord:"Mercury",element:"Earth",mode:"Dual",gender:"Female",number:6},
+{name:"Libra",sanskrit:"Tula",abbr:"Lib",symbol:"♎",lord:"Venus",element:"Air",mode:"Movable",gender:"Male",number:7},
+{name:"Scorpio",sanskrit:"Vrishchika",abbr:"Sco",symbol:"♏",lord:"Mars",element:"Water",mode:"Fixed",gender:"Female",number:8},
+{name:"Sagittarius",sanskrit:"Dhanu",abbr:"Sag",symbol:"♐",lord:"Jupiter",element:"Fire",mode:"Dual",gender:"Male",number:9},
+{name:"Capricorn",sanskrit:"Makara",abbr:"Cap",symbol:"♑",lord:"Saturn",element:"Earth",mode:"Movable",gender:"Female",number:10},
+{name:"Aquarius",sanskrit:"Kumbha",abbr:"Aqu",symbol:"♒",lord:"Saturn",element:"Air",mode:"Fixed",gender:"Male",number:11},
+{name:"Pisces",sanskrit:"Meena",abbr:"Pis",symbol:"♓",lord:"Jupiter",element:"Water",mode:"Dual",gender:"Female",number:12}
+];
+const nakNames=["Ashwini","Bharani","Krittika","Rohini","Mrigashira","Ardra","Punarvasu","Pushya","Ashlesha","Magha","Purva Phalguni","Uttara Phalguni","Hasta","Chitra","Swati","Vishakha","Anuradha","Jyeshtha","Mula","Purva Ashadha","Uttara Ashadha","Shravana","Dhanishtha","Shatabhisha","Purva Bhadrapada","Uttara Bhadrapada","Revati"];
+const nakLords=["Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury","Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury","Ketu","Venus","Sun","Moon","Mars","Rahu","Jupiter","Saturn","Mercury"];
+const fmt=(d)=>{let x=((d%360)+360)%360;let s=Math.floor(x/30),within=x%30,deg=Math.floor(within+1e-8),min=Math.round((within-deg)*60);if(min===60){deg++;min=0}return `${String(deg).padStart(2,"0")}°${String(min).padStart(2,"0")}′ ${signs[s].name}`};
+const padData=[];
+for(let n=0;n<27;n++)for(let p=0;p<4;p++){let start=n*800/60+p*200/60;let end=start+200/60;let mid=(start+end)/2;padData.push({nak:n+1,name:nakNames[n],lord:nakLords[n],pada:p+1,start,end,sign:Math.floor(mid/30)+1,startLabel:fmt(start),endLabel:fmt(end)});}
+const dignities=[
+["Sun","Leo","Aries (10°)","Libra (10°)","Leo 0°–20°"],
+["Moon","Cancer","Taurus (3°)","Scorpio (3°)","Taurus 3°–30°*"],
+["Mars","Aries, Scorpio","Capricorn (28°)","Cancer (28°)","Aries 0°–12°"],
+["Mercury","Gemini, Virgo","Virgo (15°)","Pisces (15°)","Virgo 15°–20°"],
+["Jupiter","Sagittarius, Pisces","Cancer (5°)","Capricorn (5°)","Sagittarius 0°–10°"],
+["Venus","Taurus, Libra","Pisces (27°)","Virgo (27°)","Libra 0°–15°"],
+["Saturn","Capricorn, Aquarius","Libra (20°)","Aries (20°)","Aquarius 0°–20°"]
+];
+const nodeSchemes={common:[["Rahu","Taurus","Scorpio"],["Ketu","Scorpio","Taurus"]],alternative:[["Rahu","Gemini","Sagittarius"],["Ketu","Sagittarius","Gemini"]]};
+let selectedSign=1, selectedPada=null, activeStage="north", selectedPlanet="Sun", selectedHouse=1;
+const planetNames=["Sun","Moon","Mars","Mercury","Jupiter","Venus","Saturn"];
+const planetDetails={Sun:{own:"Leo",exalt:"Aries 10°",debil:"Libra 10°",mt:"Leo 0°–20°"},Moon:{own:"Cancer",exalt:"Taurus 3°",debil:"Scorpio 3°",mt:"Taurus 3°–30°"},Mars:{own:"Aries, Scorpio",exalt:"Capricorn 28°",debil:"Cancer 28°",mt:"Aries 0°–12°"},Mercury:{own:"Gemini, Virgo",exalt:"Virgo 15°",debil:"Pisces 15°",mt:"Virgo 15°–20°"},Jupiter:{own:"Sagittarius, Pisces",exalt:"Cancer 5°",debil:"Capricorn 5°",mt:"Sagittarius 0°–10°"},Venus:{own:"Taurus, Libra",exalt:"Pisces 27°",debil:"Virgo 27°",mt:"Libra 0°–15°"},Saturn:{own:"Capricorn, Aquarius",exalt:"Libra 20°",debil:"Aries 20°",mt:"Aquarius 0°–20°"}};
+const lagna=document.getElementById("lagna");
+signs.forEach(s=>{let o=document.createElement("option");o.value=s.number;o.textContent=`${s.number} — ${s.name} (${s.sanskrit})`;lagna.append(o)});
+function houseFor(signNo){return ((signNo-Number(lagna.value)+12)%12)+1}
+function detailSign(n,house=null){let s=signs[n-1];let h=house??houseFor(n);return `<div class="big">${s.symbol} ${s.number}</div><h3>${s.name} — ${s.sanskrit}</h3><div class="pills"><span class="pill">${s.mode}</span><span class="pill">${s.element}</span><span class="pill">${s.gender}</span></div><p><b>Sign lord:</b> ${s.lord}</p><p><b>House from selected lagna:</b> ${h}</p><p><b>Degrees:</b> ${(n-1)*30}°–${n*30}° in the 360° zodiac</p><p><b>Classification:</b> ${classForSign(n).join("; ")}</p>`}
+function classForSign(n){let out=[];if([1,2,4,5,8,10,12].includes(n)||n===9)out.push(n===9?"Viyoni in second half only":"Viyoni / non-human");else out.push("Human sign");if([4,8,12].includes(n)||[3,6,9,12].includes(n))out.push("Fruitful (traditional list)");if([2,7,9,10,11].includes(n))out.push("Semi-fruitful");if([1,3,5,6].includes(n))out.push("Barren");return out}
+function polar(cx,cy,r,a){let rad=(a-90)*Math.PI/180;return [cx+r*Math.cos(rad),cy+r*Math.sin(rad)]}
+function arcPath(cx,cy,r1,r2,a0,a1){let p1=polar(cx,cy,r2,a0),p2=polar(cx,cy,r2,a1),p3=polar(cx,cy,r1,a1),p4=polar(cx,cy,r1,a0);return `M${p1[0]},${p1[1]} A${r2},${r2} 0 ${a1-a0>180?1:0} 1 ${p2[0]},${p2[1]} L${p3[0]},${p3[1]} A${r1},${r1} 0 ${a1-a0>180?1:0} 0 ${p4[0]},${p4[1]} Z`}
+function drawWheel(){let svg=document.getElementById("wheel"),out=[];const cx=300,cy=300;for(let s=0;s<12;s++){let a=s*30,b=a+30;out.push(`<path class="sign-hit ${selectedSign===s+1?'selected':''}" data-sign="${s+1}" d="${arcPath(cx,cy,145,225,a,b)}" fill="${s%2?'#eadcc6':'#f2e8d7'}"/>`);let pt=polar(cx,185,a+15);out.push(`<text class="svg-label" x="${pt[0]}" y="${pt[1]-5}">${signs[s].symbol} ${signs[s].number}</text><text class="svg-small" x="${pt[0]}" y="${pt[1]+10}">${signs[s].name}</text>`)}
+for(let i=0;i<108;i++){let a=i*(360/108),b=(i+1)*(360/108);let p=padData[i];out.push(`<path d="${arcPath(cx,cy,229,263,a,b)}" fill="${p.pada%2?'#c99c5a':'#e4c99c'}" stroke="#fffaf1" stroke-width=".8" data-pada="${i+1}" style="cursor:pointer"/>`);let mid=(a+b)/2,pt=polar(cx,246,mid);if(i%3===0)out.push(`<text class="svg-small" x="${pt[0]}" y="${pt[1]+3}">${p.nak}</text>`)}
+for(let i=0;i<12;i++){let pt=polar(cx,282,i*30+15);out.push(`<text class="svg-small" x="${pt[0]}" y="${pt[1]}">${i*30}°</text>`)}
+out.push(`<circle cx="300" cy="300" r="137" fill="#fffaf1" stroke="#9b6745" stroke-width="1.5"/><text class="svg-center" x="300" y="285">360° ZODIAC</text><text class="svg-small" x="300" y="306">12 signs · 27 nakshatras</text><text class="svg-small" x="300" y="323">108 padas · 3°20′ each</text>`);
+svg.innerHTML=out.join("");svg.querySelectorAll("[data-sign]").forEach(el=>el.addEventListener("click",()=>selectSign(+el.dataset.sign)));svg.querySelectorAll("[data-pada]").forEach(el=>el.addEventListener("click",()=>selectPada(+el.dataset.pada)));
+}
+function grahaPanel(){let d=planetDetails[selectedPlanet];return `<div class="graha-picker" aria-label="Select one of the seven planets">${planetNames.map(n=>`<button type="button" data-graha="${n}" aria-pressed="${selectedPlanet===n}">${n}</button>`).join("")}</div><div class="graha-info"><b>${selectedPlanet} — planetary dignity reference</b><p><b>Own sign(s):</b> ${d.own}</p><p><b>Exaltation:</b> ${d.exalt}</p><p><b>Debilitation:</b> ${d.debil}</p><p><b>Mool Trikona:</b> ${d.mt}</p></div>`}
+
+function setPanel(id,html){let el=document.getElementById(id);if(!el)return;el.innerHTML=html+grahaPanel();el.querySelectorAll('[data-graha]').forEach(b=>b.addEventListener('click',()=>{selectedPlanet=b.dataset.graha;refreshPanels()}))}
+function houseReference(h,sign){
+ const s=signs[sign-1], classes=houseClasses(h), padas=padData.filter(p=>p.sign===sign);
+ const dignityRows=dignities.map(d=>`<tr><td>${d[0]}</td><td>${d[1]}</td><td>${d[2]}</td><td>${d[3]}</td><td>${d[4]}</td></tr>`).join("");
+ const list=(title,items)=>`<p><b>${title}:</b> ${items}</p>`;
+ const section=(n,title,body)=>`<article class="info-card"><h3>${n}. ${title}</h3>${body}</article>`;
+ return `<div class="big">House ${h} · ${s.symbol}</div><h3>${s.name} — ${s.sanskrit}</h3>
+ <div class="pills"><span class="pill">Rāśi ${sign}</span><span class="pill">Lord: ${s.lord}</span><span class="pill">${s.mode}</span><span class="pill">${s.element}</span><span class="pill">${s.gender}</span></div>
+ <div class="section-grid house-sections">
+ ${section("1","Nakshatra / Pada Durations in This Sign",`<p>These are the padas whose midpoint falls in ${s.name}. Each pada spans 3°20′.</p>${padas.length?table(["Nakshatra","Pada","Zodiac span","Nakshatra lord"],padas.map(p=>[p.name,p.pada,`${p.startLabel} – ${p.endLabel}`,p.lord])):"<p>No pada midpoint is assigned to this sign in the supplied table.</p>"}`)}
+ ${section("2","Own Houses (Swakshetras)",`<p><b>Sign lord:</b> ${s.lord}. ${s.name} is ruled by ${s.lord}.</p><p>Own signs of ${s.lord}: ${({Mars:"Aries and Scorpio",Venus:"Taurus and Libra",Mercury:"Gemini and Virgo",Moon:"Cancer",Sun:"Leo",Jupiter:"Sagittarius and Pisces",Saturn:"Capricorn and Aquarius"})[s.lord]}.</p>`)}
+ ${section("3","Exaltation (Uchcha)",`<p>${dignities.filter(d=>d[2].startsWith(s.name)).map(d=>`${d[0]} is exalted in ${s.name} (${d[2].match(/\(.+\)/)?.[0]||"degree not specified"}).`).join(" ")||`No seven-planet exaltation point is listed in ${s.name} in the supplied reference.`}</p><p>Node convention: Rahu exalted in Taurus (alternative: Gemini); Ketu exalted in Scorpio (alternative: Sagittarius).</p>`)}
+ ${section("4","Debilitation (Neecha)",`<p>${dignities.filter(d=>d[3].startsWith(s.name)).map(d=>`${d[0]} is debilitated in ${s.name} (${d[3].match(/\(.+\)/)?.[0]||"degree not specified"}).`).join(" ")||`No seven-planet debilitation point is listed in ${s.name} in the supplied reference.`}</p><p>Node convention: Rahu debilitated in Scorpio (alternative: Sagittarius); Ketu debilitated in Taurus (alternative: Gemini).</p>`)}
+ ${section("5","Mool Trikona",`<p>${dignities.filter(d=>d[4].startsWith(s.name)).map(d=>`${d[0]}: ${d[4]}.`).join(" ")||`No Mool Trikona range is listed in ${s.name} in the supplied reference.`}</p>`)}
+ ${section("6","Movable, Fixed and Dual Signs",`<p><b>${s.name}:</b> ${s.mode} (${s.mode==="Movable"?"Chara":s.mode==="Fixed"?"Sthira":"Dwisvabhava"}).</p>${table(["Modality","Signs"],[["Movable / Chara",chips([1,4,7,10])],["Fixed / Sthira",chips([2,5,8,11])],["Dual / Dwisvabhava",chips([3,6,9,12])]])}`)}
+ ${section("7","Elements",`<p><b>${s.name}:</b> ${s.element}.</p>${table(["Element","Signs"],[["Fire / Agni",chips([1,5,9])],["Earth / Prithvi",chips([2,6,10])],["Air / Vayu",chips([3,7,11])],["Water / Jala",chips([4,8,12])]])}`)}
+ ${section("8","House and Sign Classifications",`${list("House groups",classes.join(", "))}${list("Sign classification",classForSign(sign).join(", "))}${list("House group",houseGroup(h))}<p>House ${h} is ${h<=6?"below the horizon / invisible":"above the horizon / visible"} in the convention used by this reference.</p>${table(["Term","Houses / signs","Description"],[["Kendra","1, 4, 7, 10","Angular houses"],["Panapara","2, 5, 8, 11","Succedent houses"],["Apoklima","3, 6, 9, 12","Cadent houses"],["Trikona","1, 5, 9","Trine houses"],["Trishadaya","3, 6, 11","Trishadaya houses"],["Trika","6, 8, 12","Trika houses"],["Maraka","2, 7","Maraka houses"],["Below horizon","1–6","Invisible houses"],["Above horizon","7–12","Visible houses"]])}`)}
+ </div><div class="note">The classifications and conventions shown here retain the supplied reference scheme. Rahu/Ketu exaltation and debilitation vary by Jyotish tradition.</div>`;
+}
+function refreshPanels(){
+ const h=selectedHouse, sign=((Number(lagna.value)+h-2)%12)+1;
+ const html=houseReference(h,sign);
+ setPanel("detail-north",html);setPanel("detail-south",html);
+}
+function selectSign(n){selectedSign=n;selectedHouse=houseFor(n);selectedPada=null;drawNorth();drawSouth();refreshPanels()}
+function selectHouse(h){selectedHouse=h;selectedSign=((Number(lagna.value)+h-2)%12)+1;selectedPada=null;drawNorth();drawSouth();refreshPanels()}
+function drawNorth(){
+ const svg=document.getElementById("north");
+ const regions=[
+  {h:1,pts:"250,5 372.5,127.5 250,250 127.5,127.5",c:[250,91]},
+  {h:2,pts:"5,5 250,5 127.5,127.5",c:[127,55]},
+  {h:3,pts:"5,5 127.5,127.5 5,250",c:[55,127]},
+  {h:4,pts:"5,250 127.5,372.5 250,250 127.5,127.5",c:[91,250]},
+  {h:5,pts:"5,250 127.5,372.5 5,495",c:[55,373]},
+  {h:6,pts:"5,495 250,495 127.5,372.5",c:[127,445]},
+  {h:7,pts:"250,495 127.5,372.5 250,250 372.5,372.5",c:[250,409]},
+  {h:8,pts:"250,495 372.5,372.5 495,495",c:[373,445]},
+  {h:9,pts:"495,495 372.5,372.5 495,250",c:[445,373]},
+  {h:10,pts:"495,250 372.5,127.5 250,250 372.5,372.5",c:[409,250]},
+  {h:11,pts:"495,250 372.5,127.5 495,5",c:[445,127]},
+  {h:12,pts:"495,5 250,5 372.5,127.5",c:[373,55]}
+ ];
+ let out=`<rect x="5" y="5" width="490" height="490" fill="#fffaf1" stroke="#9b6745" stroke-width="2"/>`;
+ regions.forEach(r=>{let sign=((Number(lagna.value)+r.h-2)%12)+1;let [x,y]=r.c;out+=`<g data-house="${r.h}" style="cursor:pointer"><polygon points="${r.pts}" fill="${selectedSign===sign?'#e8c98f':'#fffaf1'}" stroke="#9b6745" stroke-width="1.7"/><text class="house-label" x="${x}" y="${y-12}">HOUSE ${r.h}</text><text class="house-sign" x="${x}" y="${y+7}">${signs[sign-1].symbol}</text><text class="house-name" x="${x}" y="${y+23}">${signs[sign-1].name}</text></g>`});
+ svg.innerHTML=out;svg.querySelectorAll("[data-house]").forEach(el=>el.addEventListener("click",()=>selectHouse(+el.dataset.house)));
+}
+function drawSouth(){
+ const svg=document.getElementById("south");
+ // Fixed sign positions progress anticlockwise: Aries at top-left, then Taurus down the left edge.
+ const positions=[[0,0],[0,1],[0,2],[0,3],[1,3],[2,3],[3,3],[3,2],[3,1],[3,0],[2,0],[1,0]];
+ let out=`<rect x="5" y="5" width="490" height="490" fill="#fffaf1" stroke="#9b6745" stroke-width="2"/>`;
+ positions.forEach(([c,r],i)=>{let sign=i+1,house=houseFor(sign),x=5+c*122.5,y=5+r*122.5;out+=`<g data-sign="${sign}" style="cursor:pointer"><rect x="${x}" y="${y}" width="122.5" height="122.5" fill="${selectedSign===sign?'#e8c98f':'#fffaf1'}" stroke="#9b6745" stroke-width="1.6"/><text class="house-label" x="${x+61}" y="${y+34}">RASHI ${sign}</text><text class="house-sign" x="${x+61}" y="${y+60}">${signs[sign-1].symbol} ${signs[sign-1].name}</text><text class="house-name" x="${x+61}" y="${y+83}">House ${house}</text></g>`});
+ out+=`<rect x="127.5" y="127.5" width="245" height="245" fill="#f8f0e3" stroke="#9b6745"/><text class="svg-center" x="250" y="230">SOUTH INDIAN</text><text class="svg-small" x="250" y="254">Anticlockwise sign sequence</text><text class="svg-small" x="250" y="278">Lagna: ${lagna.value} · ${signs[Number(lagna.value)-1].name}</text>`;
+ svg.innerHTML=out;svg.querySelectorAll("[data-sign]").forEach(el=>el.addEventListener("click",()=>selectSign(+el.dataset.sign)));
+}
+function selectHouse(h){let sign=((Number(lagna.value)+h-2)%12)+1;selectedSign=sign;selectedPada=null;let base=`<div class="big">House ${h}</div><h3>${signs[sign-1].name}</h3><div class="pills"><span class="pill">Rashi ${sign}</span><span class="pill">Lord: ${signs[sign-1].lord}</span></div><p><b>House group:</b> ${houseGroup(h)}</p><p><b>Sign nature:</b> ${signs[sign-1].mode}, ${signs[sign-1].element}</p><p><b>House classification:</b> ${houseClasses(h).join(", ")}</p>`;northDescription=base;drawNorth();drawSouth();drawWheel();refreshPanels()}
+function houseGroup(h){return [1,4,7,10].includes(h)?"Kendra": [2,5,8,11].includes(h)?"Panapara": "Apoklima"}
+function houseClasses(h){let a=[];if([1,4,7,10].includes(h))a.push("Kendra");if([2,5,8,11].includes(h))a.push("Panapara");if([3,6,9,12].includes(h))a.push("Apoklima");if([1,5,9].includes(h))a.push("Trikona");if([3,6,11].includes(h))a.push("Trishadaya");if([6,8,12].includes(h))a.push("Trika");if([2,7].includes(h))a.push("Maraka");a.push(h<=6?"Below horizon / invisible":"Above horizon / visible");return a}
+function updateDetails(){northDescription=null;refreshPanels()}
+function table(headers,rows){return `<div class="table-scroll"><table><thead><tr>${headers.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(x=>`<td>${x}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`}
+function chips(nums){return `<div class="sign-list">${nums.map(n=>`<span class="sign-chip">${n} · ${signs[n-1].name}</span>`).join("")}</div>`}
+function buildSections(){
+let nakRows=padData.map(p=>[p.nak,p.name,`Pada ${p.pada}`,`${p.startLabel} – ${p.endLabel}`,`${p.sign} · ${signs[p.sign-1].name}`,p.lord]);
+let own=dignities.map(d=>[d[0],d[1]]);
+let exalt=dignities.map(d=>[d[0],d[2]]);
+let deb=dignities.map(d=>[d[0],d[3]]);
+let mt=dignities.map(d=>[d[0],d[4]]);
+let nodeRows=[["Rahu","Taurus","Scorpio"],["Ketu","Scorpio","Taurus"]];
+let sections=[
+["1. 27 Nakshatras / Pada Durations in Signs",`<p>Each nakshatra spans 13°20′ and contains four padas of 3°20′ each. The table lists every pada's exact start/end and the sign containing its midpoint; boundaries are exact zodiac divisions.</p>${table(["No.","Nakshatra","Pada","Zodiac span","Sign occupied","Nakshatra lord"],nakRows)}`],
+["2. Own Houses (Swakshetras) — Seven Planets",`<p>Traditional sign ownership for the seven visible grahas.</p>${table(["Planet","Own sign(s)"],own)}`],
+["3. Exaltation Signs (Uchcha) — Nava Grahas",`${table(["Graha","Exaltation sign / deepest point"],exalt)}<div class="note">Rahu and Ketu: a commonly used convention places Rahu in Taurus and Ketu in Scorpio. Other schools use Gemini and Sagittarius respectively. This is not universally agreed.</div>${table(["Node","Common convention","Alternative convention"],[["Rahu","Taurus","Gemini"],["Ketu","Scorpio","Sagittarius"]])}`],
+["4. Debilitation Signs (Neecha) — Nava Grahas",`${table(["Graha","Debilitation sign / deepest point"],deb)}<div class="note">For the nodes, the opposite signs follow the selected convention: common Taurus/Scorpio gives Rahu in Scorpio and Ketu in Taurus; alternative Gemini/Sagittarius gives Rahu in Sagittarius and Ketu in Gemini.</div>`],
+["5. Mool Trikona Signs (M.T.S.)",`${table(["Planet","Mool Trikona sign and degree range"],mt)}<div class="note">* Moon: commonly described as Taurus from 3° to 30° after its 0°–3° exaltation portion. Degree boundaries can be presented differently by lineage or text.</div>`],
+["6. Movable, Fixed and Dual Signs",`${table(["Modality","Signs"],[["Movable / Chara",chips([1,4,7,10])],["Fixed / Sthira",chips([2,5,8,11])],["Dual / Dwisvabhava",chips([3,6,9,12])]])}`],
+["7. Fiery, Earthy, Airy and Watery Signs",`${table(["Element","Signs"],[["Fire / Agni",chips([1,5,9])],["Earth / Prithvi",chips([2,6,10])],["Air / Vayu",chips([3,7,11])],["Water / Jala",chips([4,8,12])]])}`],
+["8. Different Types of Signs and Chart Terms",`${table(["Term","Houses / signs","Description"],[
+["(a) Kendra / Sthana","1, 4, 7, 10","Angular houses"],
+["(b) Panapara","2, 5, 8, 11","Succedent houses"],
+["(c) Apoklima","3, 6, 9, 12","Cadent houses"],
+["(d) Trikona","1, 5, 9","Trine houses"],
+["(e) Trishadaya","3, 6, 11","Trishadaya houses"],
+["(f) Trika","6, 8, 12","Trika houses"],
+["(g) Maraka","2, 7","Maraka houses"],
+["(h) Below horizon","1–6","Invisible houses in this convention"],
+["(i) Above horizon","7–12","Visible houses in this convention"],
+["(j) Male / odd signs","1, 3, 5, 7, 9, 11","Odd-numbered signs"],
+["(k) Female / even signs","2, 4, 6, 8, 10, 12","Even-numbered signs"],
+["(l) Viyoni / non-human","1, 2, 4, 5, 8, 10, 12; second half of 9","Remaining portions/signs are classed as human in this scheme"],
+["(m) Fruitful","4, 8, 12 and dual signs","Cancer, Scorpio, Pisces; plus Gemini, Virgo, Sagittarius, Pisces"],
+["(n) Semi-fruitful","2, 7, 9, 10, 11","Taurus, Libra, Sagittarius, Capricorn, Aquarius"],
+["(o) Barren","1, 3, 5, 6","Aries, Gemini, Leo, Virgo"]
+])}<div class="note">The sign-based classifications above preserve the lists supplied for this reference. Fruitful and dual classifications overlap by design in the supplied scheme. The Viyoni classification of Sagittarius applies specifically to its second half.</div>`]
+];
+document.getElementById("sections").innerHTML=sections.map((s,i)=>`<article class="info-card" style="${i===0?'grid-column:1/-1':''}"><h3>${s[0]}</h3>${s[1]}</article>`).join("");
+}
+
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>{activeStage=b.dataset.stage;document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected",String(x===b)));["north","south"].forEach(x=>document.getElementById("stage-"+x).classList.toggle("hidden",x!==activeStage))}));
+lagna.addEventListener("change",()=>{selectedHouse=1;selectedSign=Number(lagna.value);drawNorth();drawSouth();refreshPanels()});
+drawNorth();drawSouth();refreshPanels();
+</script>
+</body></html>
